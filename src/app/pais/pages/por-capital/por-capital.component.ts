@@ -6,15 +6,21 @@ import { Country } from '../../interfaces/pais.interface';
   selector: 'app-por-capital',
   templateUrl: './por-capital.component.html',
   styles: [
+    `
+    li{cursor:pointer;}
+  `
   ]
 })
 export class PorCapitalComponent {
   termino: string = '';
   hayError: boolean = false;
   capital: Country[] = [];
+  paisesSugeridos: Country[] = [];
+  mostrarSugerencias: boolean = false;
   constructor(private paisService: PaisService) { }
 
   buscar(termino: string) {
+    this.mostrarSugerencias = false;
     this.hayError = false;
     this.termino = termino;
     this.paisService.buscarCapital(this.termino)
@@ -23,10 +29,21 @@ export class PorCapitalComponent {
       }, (err) => {
         this.hayError = true;
         this.capital = [];
+        this.mostrarSugerencias = false;
       })
       ;
   }
   sugerencias(termino: string) {
     this.hayError = false;
+    this.termino = termino;
+    this.mostrarSugerencias = true;
+    this.paisService.buscarPais(termino).subscribe(paises => this.paisesSugeridos = paises.splice(0, 5),
+      (err) => {
+        this.paisesSugeridos = []
+      }
+    );
+  }
+  buscarSugerencias(termino: string) {
+    this.buscar(termino);
   }
 }

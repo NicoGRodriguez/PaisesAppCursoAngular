@@ -5,6 +5,10 @@ import { Country } from '../../interfaces/pais.interface';
   selector: 'app-pais-tabla',
   templateUrl: './pais-tabla.component.html',
   styles: [
+    `
+    .small-flags{ height: 70px;
+ width: 70px;
+    }`
   ]
 })
 export class PaisTablaComponent {
